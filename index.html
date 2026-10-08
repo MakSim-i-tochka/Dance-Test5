@@ -145,7 +145,23 @@
                 </div>
             </div>
 
-            <!-- ================= TAB 3: ПРОФИЛЬ ================= -->
+            <!-- ================= TAB 3: ИЗБРАННОЕ ================= -->
+            <div id="tab-favorites" class="tab-content p-5 space-y-5 hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-rose-400 font-semibold uppercase tracking-wider">Сохраненное</span>
+                        <h2 class="text-xl font-extrabold text-white mt-0.5">Избранное ❤️</h2>
+                    </div>
+                    <span id="favoritesCountBadge" class="text-xs text-slate-400">0 движений</span>
+                </div>
+
+                <!-- Dynamic Favorites Grid -->
+                <div id="favoritesGrid" class="grid grid-cols-2 gap-3.5">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+            <!-- ================= TAB 4: ПРОФИЛЬ ================= -->
             <div id="tab-profile" class="tab-content p-5 space-y-5 hidden">
                 <div class="glass-panel rounded-3xl p-5 text-center space-y-3 relative overflow-hidden">
                     <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-rose-500 mx-auto shadow-lg shadow-rose-600/30">
@@ -184,7 +200,7 @@
                 </div>
             </div>
 
-            <!-- ================= TAB 4: ОТДЕЛ ЗАБОТЫ ================= -->
+            <!-- ================= TAB 5: ОТДЕЛ ЗАБОТЫ ================= -->
             <div id="tab-care" class="tab-content p-5 space-y-5 hidden">
                 <div class="text-center">
                     <span class="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">Поддержка 24/7</span>
@@ -228,22 +244,26 @@
         </main>
 
         <!-- Bottom Navigation Bar -->
-        <nav class="absolute bottom-0 left-0 right-0 h-20 bg-brand-dark/95 backdrop-blur-xl border-t border-brand-border flex items-center justify-around px-2 z-40">
+        <nav class="absolute bottom-0 left-0 right-0 h-20 bg-brand-dark/95 backdrop-blur-xl border-t border-brand-border flex items-center justify-around px-1 z-40">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center space-y-1 text-rose-500 transition-colors" data-tab="home">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] font-medium">Главная</span>
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[9px] font-medium">Главная</span>
             </button>
             <button onclick="switchTab('map')" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200 transition-colors" data-tab="map">
-                <i class="fa-solid fa-map text-lg"></i>
-                <span class="text-[10px] font-medium">Карта бачатеро</span>
+                <i class="fa-solid fa-map text-base"></i>
+                <span class="text-[9px] font-medium">Карта</span>
+            </button>
+            <button onclick="switchTab('favorites')" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200 transition-colors" data-tab="favorites">
+                <i class="fa-solid fa-heart text-base"></i>
+                <span class="text-[9px] font-medium">Избранное</span>
             </button>
             <button onclick="switchTab('profile')" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200 transition-colors" data-tab="profile">
-                <i class="fa-solid fa-user text-lg"></i>
-                <span class="text-[10px] font-medium">Профиль</span>
+                <i class="fa-solid fa-user text-base"></i>
+                <span class="text-[9px] font-medium">Профиль</span>
             </button>
             <button onclick="switchTab('care')" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200 transition-colors" data-tab="care">
-                <i class="fa-solid fa-headset text-lg"></i>
-                <span class="text-[10px] font-medium">Забота</span>
+                <i class="fa-solid fa-headset text-base"></i>
+                <span class="text-[9px] font-medium">Забота</span>
             </button>
         </nav>
 
@@ -320,35 +340,30 @@
             </div>
         </div>
 
-        <!-- ================= MOVE DETAIL MODAL ================= -->
-        <div id="moveDetailModal" class="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col justify-end hidden transition-all duration-300">
-            <div class="glass-panel rounded-t-[32px] overflow-hidden border-t border-rose-500/30 flex flex-col max-h-[90vh]">
-                <div class="relative h-48 w-full bg-slate-900">
-                    <img id="moveModalImg" src="" alt="Move" class="w-full h-full object-cover">
-                    <button onclick="closeMoveDetail()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                    <div id="moveModalTag" class="absolute bottom-4 left-4 bg-rose-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        Базовый
-                    </div>
-                </div>
-                <div class="p-5 space-y-4 overflow-y-auto">
+        <!-- ================= MOVE DETAIL FULLSCREEN SCREEN ================= -->
+        <div id="moveDetailModal" class="absolute inset-0 z-50 bg-brand-dark flex flex-col hidden transition-all duration-300">
+            <div class="relative h-64 w-full bg-slate-900 shrink-0">
+                <img id="moveModalImg" src="" alt="Move" class="w-full h-full object-cover">
+                <button onclick="closeMoveDetail()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md text-white flex items-center justify-center border border-white/10">
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                </button>
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-5 space-y-5 -mt-6 relative z-10">
+                <div class="glass-panel rounded-3xl p-5 space-y-4">
                     <div>
-                        <h3 id="moveModalTitle" class="text-base font-extrabold text-white">Название</h3>
-                        <p id="moveModalVideosCount" class="text-xs text-rose-400 font-semibold mt-0.5">Видео: 0 уроков</p>
+                        <h3 id="moveModalTitle" class="text-lg font-extrabold text-white">Название</h3>
+                        <p id="moveModalVideosCount" class="text-xs text-rose-400 font-semibold mt-1">Видео: 0 движений</p>
                     </div>
                     <p id="moveModalDesc" class="text-xs text-slate-300 leading-relaxed">Описание</p>
-                    
-                    <div class="space-y-2 pt-2">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Уроки по этому движению:</h4>
-                        <div id="moveModalLessonsList" class="space-y-2">
-                            <!-- Populated dynamically -->
-                        </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider px-1">Уроки по этому движению:</h4>
+                    <div id="moveModalLessonsList" class="space-y-2.5">
+                        <!-- Populated dynamically -->
                     </div>
-
-                    <button onclick="closeMoveDetail()" class="w-full py-3 rounded-xl bg-gradient-to-r from-rose-600 to-amber-500 text-white font-bold text-xs">
-                        Закрыть
-                    </button>
                 </div>
             </div>
         </div>
@@ -373,274 +388,10 @@
 
     <!-- Application Script -->
     <script>
-        // Default initial moves if none in localStorage
         const defaultMoves = [
             {
                 id: 1,
                 title: "Основной шаг (Basic Step)",
                 category: "Базовый",
                 desc: "Базовый шаг на 4 счета с акцентом и тазом на тап.",
-                img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=400",
-                lessons: ["Разбор шагов и веса", "Перенос центра тяжести", "Ритмический акцент"]
-            },
-            {
-                id: 2,
-                title: "Боковая волна (Side Body Wave)",
-                category: "Сенсуал",
-                desc: "Плавная волна корпусом и бедрами при смещении веса.",
-                img: "https://images.unsplash.com/photo-1545959576-3f3487f46574?auto=format&fit=crop&q=80&w=400",
-                lessons: ["Изоляция грудной клетки", "Плавная волна бедрами", "Взаимодействие в паре"]
-            },
-            {
-                id: 3,
-                title: "Тарсе (Tente)",
-                category: "Футворк",
-                desc: "Динамичные переносы веса с ноги на ногу в быстром ритме.",
-                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=400",
-                lessons: ["Быстрые стопы", "Работа коленей"]
-            },
-            {
-                id: 4,
-                title: "Поворот партнерши (Spot Turn)",
-                category: "Партнеринг",
-                desc: "Одиночный поворот на месте вокруг своей оси под рукой партнера.",
-                img: "https://images.unsplash.com/photo-1524594152303-9fd1354a8770?auto=format&fit=crop&q=80&w=400",
-                lessons: ["Баланс при вращении", "Техника рук лидера"]
-            }
-        ];
-
-        // Load moves from localStorage
-        function getStoredMoves() {
-            const stored = localStorage.getItem('bachata_flow_moves');
-            if (!stored) {
-                localStorage.setItem('bachata_flow_moves', JSON.stringify(defaultMoves));
-                return defaultMoves;
-            }
-            try {
-                return JSON.parse(stored);
-            } catch(e) {
-                return defaultMoves;
-            }
-        }
-
-        function saveStoredMoves(moves) {
-            localStorage.setItem('bachata_flow_moves', JSON.stringify(moves));
-        }
-
-        // Render moves grid and admin moves list on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderMovesGrid();
-            renderAdminMovesList();
-        });
-
-        function renderMovesGrid() {
-            const moves = getStoredMoves();
-            const grid = document.getElementById('movesGrid');
-            const badge = document.getElementById('movesCountBadge');
-            badge.innerText = `${moves.length} движений`;
-
-            grid.innerHTML = '';
-            moves.forEach(m => {
-                const lessonsCount = m.lessons ? m.lessons.length : 0;
-                const cardHTML = `
-                    <div onclick="openMoveDetail(${m.id})" class="move-card glass-panel rounded-3xl overflow-hidden cursor-pointer group hover:border-rose-500/50 transition-all flex flex-col" data-name="${m.title.toLowerCase()}">
-                        <div class="relative h-32 w-full bg-slate-900 overflow-hidden">
-                            <img src="${m.img}" alt="Move" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x300/150a1f/f43f5e?text=Bachata'">
-                            <div class="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-rose-400">
-                                <i class="fa-solid fa-video mr-1"></i>${lessonsCount} урок${lessonsCount > 1 ? 'ов' : ''}
-                            </div>
-                        </div>
-                        <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
-                            <div>
-                                <span class="text-[9px] font-bold text-rose-400 uppercase">${m.category}</span>
-                                <h3 class="text-xs font-bold text-white mt-0.5 leading-snug">${m.title}</h3>
-                            </div>
-                            <span class="text-[10px] text-slate-400 flex items-center"><i class="fa-regular fa-clock mr-1"></i>Энциклопедия</span>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += cardHTML;
-            });
-        }
-
-        // Render Admin Moves List for editing/deleting
-        function renderAdminMovesList() {
-            const moves = getStoredMoves();
-            const listContainer = document.getElementById('adminMovesList');
-            listContainer.innerHTML = '';
-
-            moves.forEach(m => {
-                listContainer.innerHTML += `
-                    <div class="bg-white/5 p-3 rounded-2xl flex items-center justify-between border border-white/5 text-xs">
-                        <div class="flex items-center space-x-2.5 truncate">
-                            <img src="${m.img}" class="w-8 h-8 rounded-lg object-cover" onerror="this.src='https://placehold.co/100x100/150a1f/f43f5e?text=B'">
-                            <div class="truncate">
-                                <div class="font-bold text-white truncate">${m.title}</div>
-                                <div class="text-[10px] text-slate-400">${m.category} • ${m.lessons.length} уроков</div>
-                            </div>
-                        </div>
-                        <button onclick="deleteMovement(${m.id})" class="text-rose-400 hover:text-rose-300 p-2" title="Удалить движение">
-                            <i class="fa-solid fa-trash-can text-xs"></i>
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        // Add New Movement from Admin Panel
-        function addNewMovement() {
-            const title = document.getElementById('adminMoveTitle').value.trim();
-            const category = document.getElementById('adminMoveCategory').value;
-            const img = document.getElementById('adminMoveImg').value.trim();
-            const desc = document.getElementById('adminMoveDesc').value.trim();
-            const lessonsRaw = document.getElementById('adminMoveLessons').value.trim();
-
-            if (!title) {
-                alertBox('Ошибка', 'Пожалуйста, введите название движения.');
-                return;
-            }
-
-            const lessons = lessonsRaw ? lessonsRaw.split(',').map(l => l.trim()).filter(l => l.length > 0) : ["Основной урок"];
-
-            const moves = getStoredMoves();
-            const newMove = {
-                id: Date.now(),
-                title,
-                category,
-                desc: desc || "Описание техники движения.",
-                img: img || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=400",
-                lessons
-            };
-
-            moves.push(newMove);
-            saveStoredMoves(moves);
-
-            // Re-render
-            renderMovesGrid();
-            renderAdminMovesList();
-
-            // Clear inputs
-            document.getElementById('adminMoveTitle').value = '';
-            document.getElementById('adminMoveDesc').value = '';
-
-            alertBox('Успешно!', `Движение "${title}" добавлено в Карту бачатеро.`);
-        }
-
-        // Delete movement
-        function deleteMovement(id) {
-            let moves = getStoredMoves();
-            moves = moves.filter(m => m.id !== id);
-            saveStoredMoves(moves);
-            renderMovesGrid();
-            renderAdminMovesList();
-            alertBox('Удалено', 'Карточка движения удалена из энциклопедии.');
-        }
-
-        // Tab Navigation (делаем функцию глобальной через window)
-        window.switchTab = function(tabId) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(t => t.classList.add('hidden'));
-
-            const targetTab = document.getElementById(`tab-${tabId}`);
-            if (targetTab) {
-                targetTab.classList.remove('hidden');
-            }
-
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => {
-                if (btn.getAttribute('data-tab') === tabId) {
-                    btn.classList.remove('text-slate-400');
-                    btn.classList.add('text-rose-500');
-                } else {
-                    btn.classList.remove('text-rose-500');
-                    btn.classList.add('text-slate-400');
-                }
-            });
-
-            document.getElementById('mainContainer').scrollTop = 0;
-        }
-
-        // Admin Panel Toggle
-        window.openAdminPanel = function() {
-            document.getElementById('adminPanelModal').classList.remove('hidden');
-            renderAdminMovesList();
-        }
-
-        window.closeAdminPanel = function() {
-            document.getElementById('adminPanelModal').classList.add('hidden');
-        }
-
-        // Filter Moves in "Карта бачатеро"
-        window.filterMoves = function() {
-            const query = document.getElementById('moveSearchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.move-card');
-            
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                if (name.includes(query)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Open Move Detail Modal
-        window.openMoveDetail = function(id) {
-            const moves = getStoredMoves();
-            const move = moves.find(m => m.id === id);
-            if (!move) return;
-
-            document.getElementById('moveModalTitle').innerText = move.title;
-            document.getElementById('moveModalDesc').innerText = move.desc;
-            document.getElementById('moveModalImg').src = move.img;
-            document.getElementById('moveModalVideosCount').innerText = `Видео: ${move.lessons.length} уроков`;
-            document.getElementById('moveModalTag').innerText = move.category;
-
-            const lessonsListContainer = document.getElementById('moveModalLessonsList');
-            lessonsListContainer.innerHTML = '';
-            
-            move.lessons.forEach((lessonName, index) => {
-                lessonsListContainer.innerHTML += `
-                    <div class="bg-white/5 p-3 rounded-2xl flex items-center justify-between border border-white/5">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-play ml-0.5"></i></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">${lessonName}</div>
-                                <div class="text-[10px] text-slate-400">Урок ${index + 1} • 10 мин</div>
-                            </div>
-                        </div>
-                        <span class="text-[10px] text-emerald-400 font-bold">Доступно</span>
-                    </div>
-                `;
-            });
-
-            document.getElementById('moveDetailModal').classList.remove('hidden');
-        }
-
-        window.closeMoveDetail = function() {
-            document.getElementById('moveDetailModal').classList.add('hidden');
-        }
-
-        // Send Support Message
-        window.sendSupportMessage = function() {
-            const text = document.getElementById('supportText').value.trim();
-            if (!text) {
-                alertBox('Ошибка', 'Пожалуйста, введите текст сообщения.');
-                return;
-            }
-            alertBox('Сообщение отправлено!', 'Спасибо за обращение. Наш куратор ответит вам в течение 10 минут.');
-        }
-
-        function alertBox(title, desc) {
-            document.getElementById('alertTitle').innerText = title;
-            document.getElementById('alertDesc').innerText = desc;
-            document.getElementById('customAlertModal').classList.remove('hidden');
-        }
-
-        window.closeAlert = function() {
-            document.getElementById('customAlertModal').classList.add('hidden');
-        }
-    </script>
-</body>
-</html>
+                img: "
